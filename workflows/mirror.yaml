@@ -1,0 +1,35 @@
+name: Mirror
+
+on:
+  workflow_call:
+    inputs:
+      source_repo:
+        required: true
+        type: string
+      target_repo:
+        required: true
+        type: string
+    secrets:
+      target_token:
+        required: true
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Mirror
+        shell: bash
+        env:
+          SOURCE_REPO: ${{ inputs.source_repo }}
+          TARGET_REPO: ${{ inputs.target_repo }}
+          TARGET_TOKEN: ${{ secrets.target_token }}
+        run: |
+          set -x
+          target_repo="https://x-access-token:${TARGET_TOKEN}@github.com/${TARGET_REPO}.git"
+          git clone --mirror "${target_repo}" repo.git
+          cd repo.git
+          git remote set-url origin "${SOURCE_REPO}"
+          git config --add remote.origin.fetch "^refs/pull/*"
+          git fetch --prune origin
+          git config http.postBuffer 524288000
+          git push --mirror "${target_repo}"
