@@ -1,0 +1,30 @@
+name: Mirror
+description: "Mirror a Git repository"
+
+inputs:
+  source_url:
+    description: "Source URL"
+    required: true
+  target_url:
+    description: "Target URL"
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        SOURCE_URL: "${{ inputs.source_url }}"
+        TARGET_URL: "${{ inputs.target_url }}"
+      run: |
+        set -x
+
+        git clone --mirror "${TARGET_URL}" repo.git
+        cd repo.git
+
+        git remote set-url origin "${SOURCE_URL}"
+        git config --add remote.origin.fetch "^refs/pull/*"
+        git fetch --prune origin
+
+        git config http.postBuffer 524288000
+        git push --mirror "${TARGET_URL}"
