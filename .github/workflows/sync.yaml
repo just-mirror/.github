@@ -22,7 +22,7 @@ jobs:
           - source: "https://git.musl-libc.org/git/musl"
             target: musl
     steps:
-      - uses: "$/.github/actions/mirror.yaml"
+      - uses: "$/.github/actions/mirror"
         with:
           source_url: "${{ matrix.repo.source }}"
           target_url: "${{ format('https://x-access-token:{0}@github.com/{1}/{2}.git', secrets.ACCESS_TOKEN, github.repository_owner, matrix.repo.target) }}"
