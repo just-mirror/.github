@@ -19,8 +19,8 @@ runs:
       run: |
         set -x
 
-        git clone --mirror "${TARGET_URL}" repo.git
-        cd repo.git
+        git clone --mirror "${TARGET_URL}" repository.git
+        cd repository.git
 
         git remote set-url origin "${SOURCE_URL}"
         git config --add remote.origin.fetch "^refs/pull/*"

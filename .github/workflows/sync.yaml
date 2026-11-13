@@ -12,7 +12,7 @@ jobs:
       max-parallel: 1
       fail-fast: false
       matrix:
-        repo:
+        repository:
           - source: "https://sourceware.org/git/glibc.git"
             target: glibc
           - source: "https://sourceware.org/git/binutils-gdb.git"
@@ -24,5 +24,5 @@ jobs:
     steps:
       - uses: "$/.github/actions/mirror"
         with:
-          source_url: "${{ matrix.repo.source }}"
-          target_url: "${{ format('https://x-access-token:{0}@github.com/{1}/{2}.git', secrets.ACCESS_TOKEN, github.repository_owner, matrix.repo.target) }}"
+          source_url: "${{ matrix.repository.source }}"
+          target_url: "${{ format('https://x-access-token:{0}@github.com/{1}/{2}.git', secrets.ACCESS_TOKEN, github.repository_owner, matrix.repository.target) }}"
